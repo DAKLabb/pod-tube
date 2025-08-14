@@ -22,7 +22,7 @@ jobs:
         run: echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
 
       - name: Get all videos from channel
-        run: yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos | jq -r '[.entries[] | {title, url}]' > videos.json
+        run: yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp}]' > videos.json
 
       - name: Upload list for debugging
         uses: actions/upload-artifact@v4
@@ -31,7 +31,7 @@ jobs:
           path: videos.json
 
       - name: Download missing episodes and add to RSS feed
-        run: ./get_eps.sh videos.json 3
+        run: ./get_eps.sh videos.json 1
 
       - name: Upload feed for debugging
         uses: actions/upload-artifact@v4
