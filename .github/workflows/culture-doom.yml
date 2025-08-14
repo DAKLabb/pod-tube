@@ -1,0 +1,46 @@
+name: Update Culture Doom RSS Feed
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  update-rss:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
+      - name: Instal deps
+        run: pip install -r requirements.txt
+
+      - name: Create cookies file
+        run: echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
+
+      - name: Get all videos from channel
+        run: yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos | jq -r '[.entries[] | {title, url}]' > videos.json
+
+      - name: Upload list for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos.json
+          path: videos.json
+
+      - name: Download missing episodes and add to RSS feed
+        run: ./get_eps.sh videos.json 1
+
+      - name: Upload feed for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: culture-doom.rss
+          path: culture-doom.rss
+
+      - name: Remove cookies file
+        run: rm cookies.txt
+        
+      - name: Check-in updates
+        uses: stefanzweifel/git-auto-commit-action@v6

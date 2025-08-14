@@ -1,0 +1,32 @@
+# Input 1: path to json file of episodes
+# Input 2: number of episodes to download (i.e. 5 will only check the 5 most recent episodes)
+
+limit=$2
+count=1
+
+jq -c '.[]' $1 | while IFS= read -r item; do
+    title=$(echo "$item" | jq -r '.title')
+    url=$(echo "$item" | jq -r '.url')
+
+    echo "Title: $title, URL: $url"
+    filename=$(echo -n "$title" | md5sum | cut -d ' ' -f 1).mp3
+    echo $filename
+
+    if [ -f "$filename" ]; then
+      echo "'$title' has already been downloaded."
+    else
+      echo "Downloading '$title'."
+      yt-dlp --cookies cookies.txt -f bestaudio -o $filename --extract-audio --audio-format mp3 https://youtu.be/lX-HaNtIMYE\?si\=8NasD9O6zRJRjMyK
+
+      filesize=`du -k "$filename" | cut -f1`
+
+      echo "Adding to RSS feed"
+      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename"
+    fi
+
+    if [[ $count -eq $limit ]]; then
+        echo "Done checking the $limit most recent episodes"
+        break  # Exit the loop when we have hit the limit
+    fi
+    count=$((count + 1))
+done
