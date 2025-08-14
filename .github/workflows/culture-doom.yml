@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+  - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -31,7 +33,7 @@ jobs:
           path: videos.json
 
       - name: Download missing episodes and add to RSS feed
-        run: ./get_eps.sh videos.json 3
+        run: ./get_eps.sh videos.json 5
 
       - name: Upload feed for debugging
         uses: actions/upload-artifact@v4
