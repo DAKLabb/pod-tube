@@ -13,6 +13,8 @@ if __name__ == "__main__":
     parser.add_argument("--guid", type=str, required=True, help="guid for the episode)")
     parser.add_argument("--timestamp", type=int, required=True, help="Publish date for the episode)")
     parser.add_argument("--thumbnail", type=str, required=True, help="Thumbnail for this episode)")
+    parser.add_argument("--link", type=str, required=True, help="Link to the video episode)")
+    parser.add_argument("--description", type=str, required=True, help="Description for the episode")
 
     args = parser.parse_args()
 
@@ -33,6 +35,10 @@ if __name__ == "__main__":
     date_element.text = formatdate(args.timestamp, usegmt=True) 
     img_element = ET.SubElement(new_item, 'itunes:image')
     img_element.set("href", args.thumbnail)
+    link_element = ET.SubElement(new_item, 'link')
+    link_element.text = args.link
+    description_element = ET.SubElement(new_item, 'description')
+    description_element.text = args.description
 
     # Save the changes
     tree.write(args.path)

@@ -1,7 +1,7 @@
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
   <channel>
     <title>Culture Doom</title>
-    <author>Culture Doom</author>
+    <itunes:author>Culture Doom</itunes:author>
     <description>
     An audio-only version of the YouTube podcast Culture Doom.
     
