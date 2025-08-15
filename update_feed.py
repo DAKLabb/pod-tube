@@ -3,6 +3,8 @@ import argparse
 from email.utils import formatdate
 
 if __name__ == "__main__":
+    ET.register_namespace('itunes', "http://www.itunes.com/dtds/podcast-1.0.dtd")
+    ET.register_namespace('content',"http://purl.org/rss/1.0/modules/content/")
     parser = argparse.ArgumentParser(description="Update the provided RSS feed with a new episode.")
     parser.add_argument("path", type=str, help="Path to RSS feed being updated")
     parser.add_argument("--title", type=str, required=True, help="Title of episode being added")
