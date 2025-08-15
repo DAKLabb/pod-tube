@@ -10,7 +10,7 @@ if __name__ == "__main__":
     parser.add_argument("--bytes", type=int, required=True, help="Size of the file (in bytes)")
     parser.add_argument("--guid", type=str, required=True, help="guid for the episode)")
     parser.add_argument("--timestamp", type=int, required=True, help="Publish date for the episode)")
-    parser.add_argument("--thumbnail", type=string, required=True, help="Thumbnail for this episode)")
+    parser.add_argument("--thumbnail", type=str, required=True, help="Thumbnail for this episode)")
 
     args = parser.parse_args()
 
