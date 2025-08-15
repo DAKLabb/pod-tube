@@ -2,7 +2,7 @@
   <channel>
     <title>Culture Doom</title>
     <description>An audio-only version of the YouTube podcast.</description>
-    <ns0:image>https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/channel_img.jpg</ns0:image>
+    <ns0:image href="https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/channel_img.jpg" />
     <language>en-us</language>
     <ns0:category text="Society &amp; Culture" />
     <ns0:explicit>true</ns0:explicit>
