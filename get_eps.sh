@@ -8,6 +8,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
     title=$(echo "$item" | jq -r '.title')
     url=$(echo "$item" | jq -r '.url')
     timestamp=$(echo "$item" | jq -r '.timestamp')
+    thumbnail=$(echo "$item" | jq -r '.thumbnail')
 
     echo "Title: $title, URL: $url, Timestamp: $timestamp"
     filename=$(echo -n "$title" | md5sum | cut -d ' ' -f 1).mp3
@@ -22,7 +23,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
       filesize=`du -k "$filename" | cut -f1`
 
       echo "Adding to RSS feed"
-      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp
+      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp --thumbnail $thumbnail
     fi
 
     if [[ $count -eq $limit ]]; then

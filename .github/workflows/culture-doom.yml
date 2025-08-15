@@ -24,7 +24,8 @@ jobs:
         run: echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
 
       - name: Get all videos from channel
-        run: yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp}]' > videos.json
+        run: |
+          yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp, thumbnail: .thumbnails[0].url}]' > videos.json
 
       - name: Upload list for debugging
         uses: actions/upload-artifact@v4

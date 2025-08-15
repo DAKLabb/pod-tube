@@ -6,10 +6,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update the provided RSS feed with a new episode.")
     parser.add_argument("path", type=str, help="Path to RSS feed being updated")
     parser.add_argument("--title", type=str, required=True, help="Title of episode being added")
-    parser.add_argument("--url", type=str, required=True, help="URL of the file being added")
+    parser.add_argument("--url", type=str, required=True, help="URL of the episode being added")
     parser.add_argument("--bytes", type=int, required=True, help="Size of the file (in bytes)")
-    parser.add_argument("--guid", type=str, required=True, help="guid for the file)")
-    parser.add_argument("--timestamp", type=int, required=True, help="guid for the file)")
+    parser.add_argument("--guid", type=str, required=True, help="guid for the episode)")
+    parser.add_argument("--timestamp", type=int, required=True, help="Publish date for the episode)")
+    parser.add_argument("--thumbnail", type=string, required=True, help="Thumbnail for this episode)")
 
     args = parser.parse_args()
 
@@ -28,6 +29,8 @@ if __name__ == "__main__":
     guid_element.text = args.guid
     date_element = ET.SubElement(new_item, 'pubDate')
     date_element.text = formatdate(args.timestamp, usegmt=True) 
+    img_element = ET.SubElement(new_item, 'itunes:image')
+    img_element.set("href", args.thumbnail)
 
     # Save the changes
     tree.write(args.path)
