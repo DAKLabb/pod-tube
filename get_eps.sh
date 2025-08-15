@@ -24,7 +24,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
       filesize=`du -k "$filename" | cut -f1`
 
       echo "Adding to RSS feed"
-      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp --thumbnail $thumbnail --link $url --description $description
+      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp --thumbnail $thumbnail --link $url --description "$description"
     fi
 
     if [[ $count -eq $limit ]]; then
