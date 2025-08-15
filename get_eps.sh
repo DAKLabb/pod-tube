@@ -17,7 +17,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
       echo "'$title' has already been downloaded."
     else
       echo "Downloading '$title'."
-      yt-dlp --cookies cookies.txt -f bestaudio -o $filename --extract-audio --audio-format mp3 https://youtu.be/lX-HaNtIMYE\?si\=8NasD9O6zRJRjMyK
+      yt-dlp --cookies cookies.txt -f bestaudio -o $filename --extract-audio --audio-format mp3 $url
 
       filesize=`du -k "$filename" | cut -f1`
 
