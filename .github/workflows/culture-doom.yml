@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: culture-doom.rss
-          path: $dir/feed.rss
+          path: culture-doom/feed.rss
 
       - name: Remove cookies file
         run: rm cookies.txt
