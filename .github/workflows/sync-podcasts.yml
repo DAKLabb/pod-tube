@@ -39,7 +39,7 @@ jobs:
       - name: Upload list for debugging
         uses: actions/upload-artifact@v4
         with:
-          name: videos.json
+          name: ${{ matrix.podcast.name }}_videos.json
           path: videos.json
 
       - name: Download missing episodes and add to RSS feed
