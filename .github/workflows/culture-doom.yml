@@ -11,6 +11,10 @@ on:
 jobs:
   update-rss:
     runs-on: ubuntu-latest
+    env:
+      num_eps: 1
+      yt_url: https://www.youtube.com/@culturedoom/videos
+      dir: culture-doom
     steps:
       - uses: actions/checkout@v4
 
@@ -25,7 +29,7 @@ jobs:
 
       - name: Get all videos from channel
         run: |
-          yt-dlp --flat-playlist -J https://www.youtube.com/@culturedoom/videos --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp, description, thumbnail: .thumbnails[0].url}]' > videos.json
+          yt-dlp --flat-playlist -J $yt_url --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp, description, thumbnail: .thumbnails[0].url}]' > videos.json
 
       - name: Upload list for debugging
         uses: actions/upload-artifact@v4
@@ -34,13 +38,13 @@ jobs:
           path: videos.json
 
       - name: Download missing episodes and add to RSS feed
-        run: ./get_eps.sh videos.json 10
+        run: ./get_eps.sh videos.json $num_eps $dir
 
       - name: Upload feed for debugging
         uses: actions/upload-artifact@v4
         with:
           name: culture-doom.rss
-          path: culture-doom.rss
+          path: $dir/feed.rss
 
       - name: Remove cookies file
         run: rm cookies.txt

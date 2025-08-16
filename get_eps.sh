@@ -2,6 +2,7 @@
 # Input 2: number of episodes to download (i.e. 5 will only check the 5 most recent episodes)
 
 limit=$2
+dir=$3
 count=1
 
 jq -c '.[]' $1 | while IFS= read -r item; do
@@ -12,7 +13,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
     thumbnail=$(echo "$item" | jq -r '.thumbnail')
 
     echo "Title: $title, URL: $url, Timestamp: $timestamp"
-    filename=$(echo -n "$title" | md5sum | cut -d ' ' -f 1).mp3
+    filename=$dir/$(echo -n "$title" | md5sum | cut -d ' ' -f 1).mp3
     echo $filename
 
     if [ -f "$filename" ]; then
@@ -24,7 +25,7 @@ jq -c '.[]' $1 | while IFS= read -r item; do
       filesize=`du -k "$filename" | cut -f1`
 
       echo "Adding to RSS feed"
-      python update_feed.py culture-doom.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp --thumbnail $thumbnail --link $url --description "$description"
+      python update_feed.py $dir/feed.rss --title "$title" --url "https://github.com/DAKLabb/pod-tube/raw/refs/heads/main/$dir/$filename" --bytes $filesize --guid "$filename" --timestamp $timestamp --thumbnail $thumbnail --link $url --description "$description"
     fi
 
     if [[ $count -eq $limit ]]; then
