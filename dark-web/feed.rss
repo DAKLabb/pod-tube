@@ -1,0 +1,14 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+  <channel>
+    <title>Dark Web</title>
+    <itunes:author>Paul Scheer and Rob Huebel</itunes:author>
+    <description>
+    Paul Scheer and Rob Huebel invite you to explore the DARK WEB.
+    </description>
+    <itunes:image href="https://yt3.googleusercontent.com/UGdMI39N0F3EwaSAJOt-pGn9ofcmdkPh_Ckj-YUavRU2JvwAKRd6zBV1IoCg1fJ8Q4dED9jG=s900-c-k-c0x00ffffff-no-rj" />
+    <language>en-us</language>
+    <itunes:category text="Society &amp; Culture" />
+    <itunes:explicit>true</itunes:explicit>
+    <link>https://www.youtube.com/@enterthedarkweb</link>
+  </channel>
+</rss>

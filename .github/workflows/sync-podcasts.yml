@@ -1,0 +1,58 @@
+name: Update Podcast Feeds
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+  - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-rss:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        podcast:
+          - name: culture-doom
+            yt_url: https://www.youtube.com/@culturedoom/videos
+            num_eps: 1
+          - name: dark-web
+            yt_url: https://www.youtube.com/@enterthedarkweb/videos
+            num_eps: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
+      - name: Instal deps
+        run: pip install -r requirements.txt
+
+      - name: Create cookies file
+        run: echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
+
+      - name: Get all videos from channel
+        run: |
+          yt-dlp --flat-playlist -J ${{ matrix.podcast.yt_url }} --extractor-args youtubetab:approximate_date | jq -r '[.entries[] | {title, url, timestamp, description, thumbnail: .thumbnails[0].url}]' > videos.json
+
+      - name: Upload list for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos.json
+          path: videos.json
+
+      - name: Download missing episodes and add to RSS feed
+        run: ./get_eps.sh videos.json ${{ matrix.podcast.num_eps }} ${{ matrix.podcast.name }}
+
+      - name: Upload feed for debugging
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.podcast.name }}.rss
+          path: ${{ matrix.podcast.name }}/feed.rss
+
+      - name: Remove cookies file
+        run: rm cookies.txt
+        
+      - name: Check-in updates
+        uses: stefanzweifel/git-auto-commit-action@v6
