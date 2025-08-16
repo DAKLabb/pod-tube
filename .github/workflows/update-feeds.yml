@@ -1,0 +1,25 @@
+name: Update Podcast Feeds
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+  - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo at current ref
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 2
+      - name: Update Culture Doom
+        uses: ./.github/actions/maintain-podcast-feed
+        with:
+          show: "culture-doom"
+          num_eps: 1
+          yt_url: "https://www.youtube.com/@culturedoom/videos"
