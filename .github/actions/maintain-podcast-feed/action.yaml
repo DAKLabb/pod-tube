@@ -11,6 +11,8 @@ inputs:
     default: 1
   yt_url:
     description: "The URL for the YouTube podcast."
+  yt_cookies:
+    description: "cookies.txt needed to auth with YouTube."
 
 runs:
   using: "composite"
@@ -26,7 +28,7 @@ runs:
 
     - name: Create cookies file
       shell: bash
-      run: echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
+      run: echo "${{ inputs.yt_cookies }}" > cookies.txt
 
     - name: Get all videos from channel
       shell: bash
