@@ -17,10 +17,10 @@ jobs:
         podcast:
           - name: culture-doom
             yt_url: https://www.youtube.com/@culturedoom/videos
-            num_eps: 12
+            num_eps: 2
           - name: dark-web
             yt_url: https://www.youtube.com/@enterthedarkweb/videos
-            num_eps: 5
+            num_eps: 2
     steps:
       - uses: actions/checkout@v4
         with:
