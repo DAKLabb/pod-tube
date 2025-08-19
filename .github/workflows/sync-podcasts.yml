@@ -12,6 +12,7 @@ jobs:
   update-rss:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         podcast:
           - name: culture-doom
@@ -22,6 +23,8 @@ jobs:
             num_eps: 3
     steps:
       - uses: actions/checkout@v4
+        with:
+         ref: main
 
       - name: Install ffmpeg
         uses: FedericoCarboni/setup-ffmpeg@v3
